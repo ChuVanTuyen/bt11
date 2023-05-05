@@ -1,0 +1,29 @@
+{
+    "title 1": "english",
+    "task5": {
+        "Artist": "Artist",
+        "Featured-album": "Featured album",
+        "Suggest": "Suggest",
+        "Latest": "Latest",
+        "Popular-tag": "Popular tag",
+        "Temrs-of-service": "Temrs of service",
+        "Contact": "Contact",
+        "Help": "Help",
+        "Filter": "Filter",
+        "Send-require": "Send require",
+        "Send-require-text": "Send song requests to Mazii Voice",
+        "Send-require-note": "The song you requested will be updated on our website",
+        "Name-song": "Name's song",
+        "Name-song-enter": "Enter the name of the song you requested",
+        "Name-singer": "Name's singer",
+        "Name-singer-enter": "Enter the name of the singer, performing group",
+        "Home": "Home",
+        "Voice-chart": "Voice chart",
+        "Favourite": "Favourite",
+        "My-playlist": "My playlist",
+        "History": "History",
+        "Setting": "Setting",
+        "About-us": "About us",
+        "views": "views"
+    }
+}
