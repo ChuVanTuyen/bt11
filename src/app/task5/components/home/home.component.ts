@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, PLATFORM_ID, QueryList, ViewChild, ViewChildren } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -28,11 +29,17 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   ];
   itemActive = 0;
   clearInfinity: any;
+  isBrowser: boolean;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
   ngAfterViewInit(): void {
-    this.clearInfinity = setInterval(() => {
-      this.itemActive++;
-      this.itemActive %= this.bannerImgs.length;
-    }, 5000);
+    if (this.isBrowser) {
+      this.clearInfinity = setInterval(() => {
+        this.itemActive++;
+        this.itemActive %= this.bannerImgs.length;
+      }, 5000);
+    }
   }
 
   changeItemActive(index: number): void {

@@ -2,8 +2,8 @@
     <h5>
         <ng-content></ng-content>
     </h5>
-    <div class="slide" (window:resize)="screenChange()" #ngSlide>
-        <ng-container *ngIf="type === 1">
+    <div class="slide" #ngSlide> <!--(window:resize)="screenChange()"-->
+        <ng-container *ngIf="type === 1"><!-- && isBrowser-->
             <ng-container *ngFor="let item of list; index as idx; count as lenght ">
                 <div class="item" [style.marginRight.px]="(idx !== lenght - 1) && itemMargin">
                     <div class="item-img">

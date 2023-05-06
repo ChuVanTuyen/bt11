@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { ServerModule } from '@angular/platform-server';
+import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { translateServerLoaderFactory } from './loader/translate-server.loader'
+import { TransferState } from '@angular/platform-browser';
 
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
@@ -11,6 +11,14 @@ import { AppComponent } from './app.component';
   imports: [
     AppModule,
     ServerModule,
+    ServerTransferStateModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: translateServerLoaderFactory,
+        deps: [TransferState]
+      }
+    })
 
   ],
   bootstrap: [AppComponent],

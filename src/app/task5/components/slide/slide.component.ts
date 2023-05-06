@@ -1,5 +1,16 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+// import { PlatfromBrowserService } from 'src/app/services/platfrom-browser.service';
+
+interface Song {
+  name: string,
+  artist: string,
+  level: string,
+  img: string,
+  kindOfMusic: string
+}
+
+
 
 @Component({
   selector: 'app-slide',
@@ -8,36 +19,44 @@ import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnInit,
 })
 export class SlideComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild("ngSlide") slide!: ElementRef;
-  @Input() list: any;
-  @Input() itemMargin: any;
-  @Input() type: any;
+  @Input() list: Array<Song> | undefined;
+  @Input() itemMargin: number | undefined;
+  @Input() type: number | undefined;
   resizeWidth = 0;
   showItemNum = 0;// số phần tử nằm gọn traong khung hình
-  slideItem: any;// phần tử html trong slide;
+  slideItem: HTMLElement | undefined;// phần tử html trong slide;
   slidePosition = 0;// giá trị slide đã translateX
   slideLength = 0;// số các phần tử có trong slide
-  itemWidth = 0;// width của 1 phần tử có trong slide
   slideWidth = 0;// width của slide
-  isBrowser: boolean;
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  itemWidth: number | undefined;// width của 1 phần tử có trong slide
+  isBrowser = false;
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
   ngOnChanges(): void {
-    this.slideLength = this.list.length;
+    if (this.list) {
+      this.slideLength = this.list.length;
+    }
   }
   ngOnInit(): void {
+
   }
   ngAfterViewInit(): void {
+
     if (this.isBrowser) {
       this.slideItem = this.slide.nativeElement.querySelector(".item");
-      this.itemWidth = this.slideItem.getBoundingClientRect().width;// lấy chiều rộng của item trong slide
-      this.slideWidth = this.slide.nativeElement.getBoundingClientRect().width; // lấy chiều rộng của slide
-      this.showItemNum = Math.floor(this.slideWidth / (this.itemWidth + this.itemMargin));// số item nằm gọn trong chiều rộng của 1 slide
+      if (this.slideItem) {
+        this.itemWidth = this.slideItem.getBoundingClientRect().width;// lấy chiều rộng của item trong slide
+        this.slideWidth = this.slide.nativeElement.getBoundingClientRect().width; // lấy chiều rộng của slide
+        if (this.itemMargin) {
+          this.showItemNum = Math.floor(this.slideWidth / (this.itemWidth + this.itemMargin));// số item nằm gọn trong chiều rộng của 1 slide
+        }
+      }
     }
   }
   onclickBtnDirection(event: any, left: boolean): void {
-    // let e = event.target.parentElement;
-    if (this.slideLength) {
+    let e = event.target.parentElement;
+    if (this.slideLength && this.itemWidth && this.itemMargin) {
       if (left) {
         // nếu width phần bị che ở phía trái còn ít hơn độ rộng hiển thị thì transfrom translate về 0
         if (-this.slidePosition <= (this.itemWidth + this.itemMargin) * this.showItemNum) {
@@ -62,7 +81,9 @@ export class SlideComponent implements OnInit, OnChanges, AfterViewInit {
 
   screenChange(): void { // sự kiện thay đổi kích thước màn hình
     this.slideWidth = this.slide.nativeElement.getBoundingClientRect().width;// lấy lại width của slide
-    this.showItemNum = Math.floor(this.slideWidth / (this.itemWidth + this.itemMargin));// thay đổi số phần tử mỗi lần dịch
+    if (this.itemWidth && this.itemMargin) {
+      this.showItemNum = Math.floor(this.slideWidth / (this.itemWidth + this.itemMargin));// thay đổi số phần tử mỗi lần dịch
+    }
     this.slidePosition = 0;
     this.slide.nativeElement.style.transform = `translateX(0px)`;
   }

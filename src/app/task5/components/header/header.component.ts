@@ -9,8 +9,7 @@ import { LanguageService } from 'src/app/services/language.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  constructor(private language: LanguageService, private router: Router) {
-  }
+  constructor(private language: LanguageService, private router: Router) { }
   @Output() openNav = new EventEmitter<boolean>();
   showModal = false;
   openNavBar(): void {
